@@ -84,7 +84,7 @@ class AddMenuItemView(APIView):
         # Check if tab is open
         if tab.status != 'open':
             return Response({
-                'error': 'Cannot add items to a closed tab'
+                'error': 'Cannot add items to a closed or paid tab'
             }, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = AddMenuItemSerializer(data=request.data)

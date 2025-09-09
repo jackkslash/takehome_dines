@@ -1,59 +1,61 @@
 # EPOS - Electronic Point of Sale System
 
-A Django-based EPOS system with PostgreSQL and Redis.
+A simple café EPOS system built with Django and PostgreSQL.
 
 ## Quick Start
 
-1. **Copy environment file**
+1. **Setup**
    ```bash
    cp env.example .env
-   ```
-
-2. **Start with Docker**
-   ```bash
    docker-compose up --build
    ```
 
-3. **Run migrations**
+2. **Initialize**
    ```bash
    docker-compose exec web uv run manage.py migrate
+   docker-compose exec web uv run manage.py seed_menu --clear
    ```
 
-4. **Run menu seeding**
-    ```bash
-    docker-compose exec web uv run manage.py seed_menu --clear 
-    ```
+3. **Use the API**
+   - **API Docs**: http://localhost:8000/api/docs
+   - **Admin**: http://localhost:8000/admin/
 
-5. **Access the app**
-   - API: http://localhost:8000/api/
-   - Swagger Docs: http://localhost:8000/api/docs
-   - Admin: http://localhost:8000/admin/
+## API Usage
 
-## Environment Variables
-
-Edit `.env` file with your settings:
-
-```env
-POSTGRES_DB=epos_db
-POSTGRES_USER=epos_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
-
-REDIS_HOST=redis
-REDIS_PORT=6379
-REDIS_DB=0
-
-SECRET_KEY=your-secret-key
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
+All requests need an API key header:
+```bash
+curl -H "X-API-Key: demo" http://localhost:8000/api/tabs
 ```
 
-## Tech Stack
+### Example Flow
 
-- Django 5.2.6
-- PostgreSQL
-- Redis
-- Docker
-- UV package manager
+1. **Create a tab**
+   ```bash
+   curl -X POST -H "X-API-Key: demo" -H "Content-Type: application/json" \
+        -d '{"table_number": 5, "covers": 2}' http://localhost:8000/api/tabs
+   ```
+
+2. **Add items**
+   ```bash
+   curl -X POST -H "X-API-Key: demo" -H "Content-Type: application/json" \
+        -d '{"menu_item_id": 1, "qty": 2}' http://localhost:8000/api/tabs/1/items
+   ```
+
+3. **View tab**
+   ```bash
+   curl -H "X-API-Key: demo" http://localhost:8000/api/tabs/1
+   ```
+
+4. **Create payment**
+   ```bash
+   curl -X POST -H "X-API-Key: demo" -H "Content-Type: application/json" \
+        http://localhost:8000/api/tabs/1/payment_intent
+   ```
+
+5. **Take payment**
+   ```bash
+   curl -X POST -H "X-API-Key: demo" -H "Content-Type: application/json" \
+        -d '{"client_secret": "secret_abc123"}' http://localhost:8000/api/tabs/1/take_payment
+   ```
+
 

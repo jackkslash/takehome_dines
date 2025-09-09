@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
-    'tabs'
+    'tabs',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -143,9 +144,18 @@ CACHES = {
     }
 }
 
+# API Key for authentication
+API_KEY = os.environ.get('API_KEY', 'demo')
+
 # DRF Spectacular settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'epos.authentication.APIKeyAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'epos.permissions.APIKeyPermission',
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
@@ -155,4 +165,23 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'SCHEMA_PATH_PREFIX': '/api/',
+    'SECURITY_DEFINITIONS': {
+        'ApiKeyAuth': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'X-API-Key',
+            'description': 'API Key for authentication. Use "demo" as the value.'
+        }
+    },
+    'SECURITY': [{'ApiKeyAuth': []}],
+    'APPEND_COMPONENTS': {
+        'securitySchemes': {
+            'ApiKeyAuth': {
+                'type': 'apiKey',
+                'in': 'header',
+                'name': 'X-API-Key',
+                'description': 'API Key for authentication. Use "demo" as the value.'
+            }
+        }
+    },
 }

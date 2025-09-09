@@ -14,6 +14,7 @@ class MenuItem(models.Model):
 class Tab(models.Model):
 	STATUS_CHOICES = [
 		('open', 'Open'),
+		('paid', 'Paid'),
 		('closed', 'Closed'),
 	]
 	table_number = models.PositiveIntegerField()

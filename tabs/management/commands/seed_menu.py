@@ -29,7 +29,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Croissant",
-                "unit_price_p": 250,  # £2.50
+                "unit_price_p": 280,  # £2.80
                 "vat_rate_percent": 20.0
             },
             {
@@ -39,8 +39,8 @@ class Command(BaseCommand):
             },
             {
                 "name": "Kids Meal",
-                "unit_price_p": 800,  # £8.00
-                "vat_rate_percent": 0.0
+                "unit_price_p": 700,  # £7.00
+                "vat_rate_percent": 5.0
             },
             {
                 "name": "Pizza Margherita",

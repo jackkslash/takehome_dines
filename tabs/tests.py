@@ -179,6 +179,8 @@ class TabAPITests(APITestCase):
             unit_price_p=500,  # £5.00
             vat_rate_percent=Decimal('20.0')
         )
+        # Add API key to all requests
+        self.client.defaults['HTTP_X_API_KEY'] = 'demo'
     
     def test_create_tab(self):
         """Test creating a new tab"""
