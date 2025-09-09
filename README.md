@@ -19,8 +19,14 @@ A Django-based EPOS system with PostgreSQL and Redis.
    docker-compose exec web uv run manage.py migrate
    ```
 
-4. **Access the app**
+4. **Run menu seeding**
+    ```bash
+    docker-compose exec web uv run manage.py seed_menu --clear 
+    ```
+
+5. **Access the app**
    - API: http://localhost:8000/api/
+   - Swagger Docs: http://localhost:8000/api/docs
    - Admin: http://localhost:8000/admin/
 
 ## Environment Variables
